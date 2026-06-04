@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pour mon chéri - Paguiiel</title>
+    <style>
+        /* ==========================================================================
+           1. STYLES GÉNÉRAUX & ANIMATIONS
+           ========================================================================== */
+        :root {
+            --fond-noir: #050505;
+            --cyan-fluo: #00f3ff;
+            --rouge-passion: #ff003c;
+            --rose-tendre: #ff69b4;
+            --or-royal: #ffd700;
+            --texte-blanc: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--fond-noir);
+            color: var(--texte-blanc);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            padding: 40px 20px;
+        }
+
+        /* Arrière-plan d'étoiles scintillantes */
+        .espace-etoile {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .etoile {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: scintillement var(--duree) infinite ease-in-out;
+        }
+
+        @keyframes scintillement {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px #fff; }
+        }
+
+        /* Éléments communs aux pages */
+        .page {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 650px;
+            padding: 40px 30px;
+            text-align: center;
+            background: rgba(10, 10, 10, 0.9);
+            border: 2px solid var(--cyan-fluo);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+            border-radius: 16px;
+            transition: all 0.5s ease-in-out;
+            height: auto;
+        }
+
+        .bouton-universel {
+            background: transparent;
+            padding: 14px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        /* Cœurs en CSS pur */
+        .coeur-decoratif {
+            display: inline-block;
+            position: relative;
+            width: 24px;
+            height: 24px;
+            margin: 0 10px;
+            animation: battement 1.2s infinite;
+        }
+        .coeur-decoratif::before, .coeur-decoratif::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 24px 24px 0 0;
+        }
+        .coeur-decoratif::before { left: 12px; transform: rotate(-45deg); transform-origin: 0 100%; }
+        .coeur-decoratif::after { left: 0; transform: rotate(45deg); transform-origin: 100% 100%; }
+        
+        .rouge::before, .rouge::after { background-color: var(--rouge-passion); }
+        .rose::before, .rose::after { background-color: var(--rose-tendre); }
+
+        @keyframes battement {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* ==========================================================================
+           2. PAGE 1 : ACCUEIL
+           ========================================================================== */
+        #page-accueil {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grand-titre-accueil {
+            font-size: 2.8rem;
+            color: var(--or-royal);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            margin: 25px 0;
+            line-height: 1.3;
+        }
+
+        .bouton-entrer {
+            color: var(--cyan-fluo);
+            border: 2px solid var(--cyan-fluo);
+            margin-top: 30px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .bouton-entrer:hover {
+            background: var(--cyan-fluo);
+            color: var(--fond-noir);
+            box-shadow: 0 0 25px var(--cyan-fluo);
+        }
+
+        /* ==========================================================================
+           3. PAGE 2 : LES POÈMES & LE FINAL
+           ========================================================================== */
+        #page-voyage {
+            display: none;
+        }
+
+        .titre-fixe {
+            font-size: 1.8rem;
+            color: var(--cyan-fluo);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            padding-bottom: 15px;
+        }
+
+        .zone-poeme {
+            min-height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            font-style: italic;
+            color: #f0f0f0;
+            margin-bottom: 30px;
+        }
+
+        .bouton-suivant {
+            color: var(--rouge-passion);
+            border: 2px solid var(--rouge-passion);
+            box-shadow: 0 0 10px rgba(255, 0, 60, 0.2);
+        }
+
+        .bouton-suivant:hover {
+            background: var(--rouge-passion);
+            color: var(--fond-noir);
+            box-shadow: 0 0 25px var(--rouge-passion);
+        }
+
+        .compteur {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #777;
+            letter-spacing: 1px;
+        }
+
+        /* Écran Final dans la Page 2 */
+        .cadre-final {
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .message-benediction {
+            line-height: 1.7;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        .bloc-verset {
+            border-left: 3px solid var(--rouge-passion);
+            padding-left: 15px;
+            margin: 25px 0;
+            font-style: italic;
+            color: var(--or-royal);
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .souhait-divin {
+            color: var(--cyan-fluo);
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.25rem;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        /* Bouton Musique Spécial */
+        .bouton-musique {
+            display: block;
+            margin-top: 30px;
+            width: 100%;
+            text-align: center;
+            color: var(--fond-noir);
+            background: var(--or-royal);
+            border: 2px solid var(--or-royal);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            text-decoration: none;
+        }
+
+        .bouton-musique:hover {
+            background: transparent;
+            color: var(--or-royal);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Effet Confettis */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            z-index: 5;
+            animation: chute var(--vitesse) linear infinite;
+        }
+
+        @keyframes chute {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Arrière-plan décoratif d'étoiles -->
+    <div class="espace-etoile" id="decorations"></div>
+
+    <!-- ==========================================================================
+       PAGE 1 : L'ACCUEIL CHALEUREUX
+       ========================================================================== -->
+    <div class="page" id="page-accueil">
+        <div>
+            <span class="coeur-decoratif rouge"></span>
+            <span class="coeur-decoratif rose"></span>
+        </div>
+        <h1 class="grand-titre-accueil">Joyeux Anniversaire<br><span style="color: var(--cyan-fluo);">Mon Chéri</span></h1>
+        <div>
+            <span class="coeur-decoratif rose"></span>
+            <span class="coeur-decoratif rouge"></span>
+        </div>
+        <button class="bouton-universel bouton-entrer" onclick="ouvrirDeuxiemePage()">Entrer dans ton écrin</button>
+    </div>
+
+    <!-- ==========================================================================
+       PAGE 2 : LE VOYAGE DES POÈMES ET LE FINAL (CONFETTIS ET CHANSON)
+       ========================================================================== -->
+    <div class="page" id="page-voyage">
+        <h2 class="titre-fixe" id="titre-dynamique">Un amour pur pour Paguiiel</h2>
+        
+        <div class="zone-poeme" id="contenu-dynamique">
+            <!-- Rempli par le JavaScript -->
+        </div>
+
+        <button class="bouton-universel bouton-suivant" id="bouton-controle" onclick="suivant()">Découvrir mes mots</button>
+        
+        <div class="compteur" id="indicateur-progression">1 / 8</div>
+    </div>
+
+    <!-- ==========================================================================
+       4. SCRIPT LOGIQUE (JAVASCRIPT)
+       ========================================================================== -->
+    <script>
+        // Génération automatique des étoiles scintillantes
+        const conteneurDecorations = document.getElementById('decorations');
+        for (let i = 0; i < 60; i++) {
+            let etoile = document.createElement('div');
+            etoile.className = 'etoile';
+            etoile.style.left = Math.random() * 100 + '%';
+            etoile.style.top = Math.random() * 100 + '%';
+            let taille = Math.random() * 3 + 1 + 'px';
+            etoile.style.width = taille;
+            etoile.style.height = taille;
+            etoile.style.setProperty('--duree', Math.random() * 2 + 1 + 's');
+            conteneurDecorations.appendChild(etoile);
+        }
+
+        // Passage de la page 1 à la page 2
+        function ouvrirDeuxiemePage() {
+            document.getElementById('page-accueil').style.display = 'none';
+            document.getElementById('page-voyage').style.display = 'block';
+            window.scrollTo(0, 0);
+            afficherPoeme();
+        }
+
+        // Les 8 poèmes tendres
+        const listepoemes = [
+            "Au-delà des distances et des regards timides,\nNotre lien se tisse dans un espace limpide.\nUn amour pur, préservé des orages,\nQui s'écrit patiemment au fil des pages.",
+            "Sans aucun geste empressé ni profane,\nC'est d'âme à âme que notre histoire plane.\nUne tendresse douce, un respect infini,\nVoilà le trésor dont notre amour se nourrit.",
+            "Chaque pensée pour toi est une prière constante,\nUne mélodie silencieuse et rassurante.\nJe chéris cette merveilleuse complicité,\nQui grandit à l'abri du monde, en toute pureté.",
+            "Ton cœur est un refuge de paix et de bonté,\nUn jardin secret que Dieu a béni et planté.\nPrès de toi, le temps semble suspendre son cours,\nPour laisser place à la noblesse du véritable amour.",
+            "Notre patience mutuelle est notre plus beau joyau,\nUn chemin précieux qui nous élève vers le haut.\nPas besoin de promesses bruyantes ou éphémères,\nQuand le cœur sait reconnaître sa plus belle lumière.",
+            "Dans le calme de tes silences et de tes mots posés,\nJe découvre une affection que rien ne peut briser.\nUn attachement sincère, spirituel et profond,\nQui trouve sa force dans les plus belles fondations.",
+            "C'est un privilège rare de cheminer à tes côtés,\nD'apprendre à t'aimer dans la pure vérité.\nChaque jour passé sans hâte est un pas de plus,\nVers cet avenir radieux que le ciel a voulu.",
+            "Aujourd'hui est ton jour, mon précieux pilier,\nLe moment parfait pour te voir rayonner.\nLaisse mes derniers mots guider tes pas,\nVers la surprise finale qui n'attend que toi."
+        ];
+
+        let indexActuel = 0;
+
+        const zoneContenu = document.getElementById('contenu-dynamique');
+        const boutonControle = document.getElementById('bouton-controle');
+        const indicateur = document.getElementById('indicateur-progression');
+        const titreDynamique = document.getElementById('titre-dynamique');
+
+        function afficherPoeme() {
+            zoneContenu.innerText = listepoemes[indexActuel];
+            indicateur.innerText = (indexActuel + 1) + " / " + listepoemes.length;
+            if (indexActuel === listepoemes.length - 1) {
+                boutonControle.innerText = "Découvrir tes vœux finaux";
+            } else {
+                boutonControle.innerText = "Lire le poème suivant";
+            }
+        }
+
+        function suivant() {
+            if (indexActuel < listepoemes.length - 1) {
+                indexActuel++;
+                afficherPoeme();
+            } else {
+                afficherEcranFinal();
+            }
+        }
+
+        // Confettis
+        function lancerConfettis() {
+            const couleurs = ['#00f3ff', '#ff003c', '#ff69b4', '#ffd700', '#00ff00', '#ffffff'];
+            for (let i = 0; i < 120; i++) {
+                let confeti = document.createElement('div');
+                confeti.className = 'confetti';
+                confeti.style.left = Math.random() * 100 + 'vw';
+                confeti.style.backgroundColor = couleurs[Math.floor(Math.random() * couleurs.length)];
+                confeti.style.setProperty('--vitesse', Math.random() * 3 + 2 + 's');
+                confeti.style.top = '-20px';
+                document.body.appendChild(confeti);
+            }
+        }
+
+        function afficherEcranFinal() {
+            titreDynamique.innerHTML = "✨ Joyeux Anniversaire Paguiiel ✨";
+            
+            zoneContenu.innerHTML = `
+                <div class="cadre-final">
+                    <p class="message-benediction">Mon chéri, en ce jour unique où nous célébrons le souffle de vie que tu as reçu, mon cœur déborde de gratitude. Notre complicité est un cadeau rare, un chemin empreint de respect et d'une pureté précieuse devant Dieu.</p>
+                    
+                    <p class="message-benediction">Tu occupes une place à part, irremplaçable et magnifique.</p>
+                    
+                    <div class="bloc-verset">
+                        « Mon bien-aimé est blanc et vermeil ; Il se distingue entre dix mille. »<br>
+                        — Cantique des cantiques 5:10
+                    </div>
+                    
+                    <p class="message-benediction">À mes yeux, tu es cette évidence, cet homme intègre et exceptionnel qui se démarque parmi tous.</p>
+                    
+                    <p class="souhait-divin">Que le Seigneur Dieu te bénisse abondamment. Qu'Il t'accorde une santé de fer, une joie inaltérable et qu'Il guide chacun de tes pas vers l'accomplissement de ton brillant destin. Joyeux anniversaire, mon amour.</p>
+                    
+                    <!-- ADRESSE UNIVERSELLE DE LA VIDÉO AVEC LE TEMPS EXACT VALIDE (3m49s = 229s) -->
+                    <a href="https://youtu.be/FOfbEw8DcoY?t=229" target="_blank" class="bouton-universel bouton-musique">
+                        🎵 Écouter ta chanson : AMINI (calée à 3:49)
+                    </a>
+                </div>
+            `;
+            
+            boutonControle.style.display = 'none';
+            indicateur.style.display = 'none';
+            
+            window.scrollTo(0, 0);
+            lancerConfettis();
+        }
+    </script>
+</body>
+</html>
